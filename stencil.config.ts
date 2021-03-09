@@ -11,7 +11,10 @@ export const config: Config = {
   taskQueue: 'async',
   outputTargets: [{
     type: 'www',
-    serviceWorker: null
+    serviceWorker: null,
+    copy: [
+      { src: '_redirects' }
+    ]
   }],
   plugins: [
     postcss({
