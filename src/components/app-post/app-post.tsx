@@ -1,4 +1,5 @@
 import { Component, Host, h, Prop, State } from '@stencil/core';
+import fitvids from 'fitvids';
 
 @Component({
   tag: 'app-post',
@@ -11,6 +12,10 @@ export class AppPost {
 
   componentWillLoad() {
     this.getPosts();
+  }
+
+  componentDidRender() {
+    fitvids()
   }
 
   async getPosts() {

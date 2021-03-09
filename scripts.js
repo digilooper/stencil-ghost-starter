@@ -32,51 +32,52 @@ const processData = async ( ) => {
 
         const data = await contentrequest(i);
 
-        const stringdata = JSON.stringify(data);
+        if ( data ) {
+            const stringdata = JSON.stringify(data);
 
-        let regExp = new RegExp(api_url + '/content/images');
-
-        let newStr = stringdata.replace(regExp, content_path, 'g' );
-
-        fse.outputFile( 'src/assets/content/posts/pagination/' + data.meta.pagination.page + '.json', newStr, function (err) {
-            if (err) throw err;
-            console.log('pagination created successfully.');
-        });
-        
-        data.posts.map( async post => {
-
-            const dom = new JSDOM(post.html , { includeNodeLocations: true } );
-            const images = dom.window.document.querySelectorAll("img");
-            
-            images.forEach(function(image) {
-
-                const src = image.getAttribute('src');
-                const url = new URL(src);
-
-                const path = './src/assets/content/images' + url.pathname;
-
-                processImage( url.href, path );
-
-                let regExp = new RegExp(url.href);
-                let newStr = post.html.replace(regExp, content_path + url.pathname );
-                post.html = newStr;
-
-            });
-
-            post.html = await processLinks(post.html);
-
-            const feature_url = new URL(post.feature_image);
-            const feature_path = './src/assets/content/images' + feature_url.pathname;
-            processImage( feature_url.href, feature_path );
-
-            post.feature_image = '/assets/content/images' + feature_url.pathname;
-
-            fse.outputFile( 'src/assets/content/posts/' + post.slug + '.json', JSON.stringify(post), function (err) {
+            let regExp = new RegExp(api_url + '/content/images');
+    
+            let newStr = stringdata.replace(regExp, content_path, 'g' );
+    
+            fse.outputFile( 'src/assets/content/posts/pagination/' + data.meta.pagination.page + '.json', newStr, function (err) {
                 if (err) throw err;
-                console.log( post.title + ' created successfully.');
+                console.log('pagination created successfully.');
             });
-        });
-
+            
+            data.posts.map( async post => {
+    
+                const dom = new JSDOM(post.html , { includeNodeLocations: true } );
+                const images = dom.window.document.querySelectorAll("img");
+                
+                images.forEach(function(image) {
+    
+                    const src = image.getAttribute('src');
+                    const url = new URL(src);
+    
+                    const path = './src/assets/content/images' + url.pathname;
+    
+                    processImage( url.href, path );
+    
+                    let regExp = new RegExp(url.href);
+                    let newStr = post.html.replace(regExp, content_path + url.pathname );
+                    post.html = newStr;
+    
+                });
+    
+                post.html = await processLinks(post.html);
+    
+                const feature_url = new URL(post.feature_image);
+                const feature_path = './src/assets/content/images' + feature_url.pathname;
+                processImage( feature_url.href, feature_path );
+    
+                post.feature_image = '/assets/content/images' + feature_url.pathname;
+    
+                fse.outputFile( 'src/assets/content/posts/' + post.slug + '.json', JSON.stringify(post), function (err) {
+                    if (err) throw err;
+                    console.log( post.title + ' created successfully.');
+                });
+            });
+        }
     }
 }
 
@@ -88,7 +89,7 @@ const contentrequest = async ( page = 1 ) => {
         console.log('Retrieved api data...');
         return data;
     } catch {
-        return [];
+        return;
     }
  
 }
