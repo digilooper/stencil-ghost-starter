@@ -1,0 +1,32 @@
+{
+  "name": "stencil-themes",
+  "private": true,
+  "version": "0.0.1",
+  "description": "stencil-themes",
+  "license": "MIT",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "build": "node scripts.js && stencil build",
+    "start": "stencil build --dev --watch --serve",
+    "test": "stencil test --spec --e2e",
+    "test.watch": "stencil test --spec --e2e --watch",
+    "generate": "stencil generate",
+    "cms": "node scripts.js"
+  },
+  "devDependencies": {
+    "@ionic/core": "^5.3.2",
+    "@stencil/core": "^2.0.1",
+    "@stencil/postcss": "^2.0.0",
+    "@types/autoprefixer": "^10.2.0",
+    "autoprefixer": "^10.2.5",
+    "postcss-color-mod-function": "^3.0.3"
+  },
+  "dependencies": {
+    "fs-extra": "^9.1.0",
+    "image-downloader": "^4.0.2",
+    "jsdom": "^16.4.0",
+    "path": "^0.12.7"
+  }
+}
